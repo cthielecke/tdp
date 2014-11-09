@@ -1,6 +1,12 @@
 = tdp
 
-Description goes here.
+Templated Data Provisioning
+...or the poor man's Q-Up.
+
+This tool is a small DSL designed to glue together arbitrary templates and configurations to provide data specifications in a versatile and easy way.
+As there are no limitations on what to specify with a template, neither will the usage of this tool be limited to specific domains of use.
+It was initially intended to generate a host of XML test data specifications in a reproducible way.
+For automation purposes the use of Rake or some similar tool is mandatory.
 
 == Contributing to tdp
  
@@ -14,6 +20,6 @@ Description goes here.
 
 == Copyright
 
-Copyright (c) 2014 Carsten Thielecke. See LICENSE.txt for
-further details.
+Copyright (c) 2014 Carsten Thielecke. 
+See LICENSE.txt for further details.
 
