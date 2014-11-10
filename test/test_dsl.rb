@@ -8,7 +8,7 @@ include TDP::DSL
 include TDP
 
 	def setup
-		$mock = Minitest::Mock.new
+		$mock = MiniTest::Mock.new
 	end
 
   def TDP.application
@@ -35,7 +35,7 @@ include TDP
     assert $mock.verify
 	end
   
-  def test_definition_of_class
+  def test_definition_of_classes
     klasses = [ 'Task', 'Config', 'Template' ]
     klasses.each do |klass|
       $mock.expect :add_item, true, ["#{klass}".to_sym, "name", Proc]
@@ -45,5 +45,18 @@ include TDP
       assert $mock.verify
     end
   end
+  
+	def test_template_path
+    fnsarray = [["afile", "bfile", "../cfile"], 
+                "./adir/afile", 
+                "", 
+                ]
+    fnsarray.each do |fns|
+      $mock.expect :add_template_path, true, [files: [fns], freeze: false]
+      template_path fns
+      assert $mock.verify
+    end
+	end
+
     
 end
