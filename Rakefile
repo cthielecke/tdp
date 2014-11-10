@@ -20,7 +20,12 @@ For automation purposes the use of Rake or some similar tool is mandatory.}
   gem.authors = ["Carsten Thielecke"]
   gem.platform = Gem::Platform::RUBY
   gem.required_ruby_version = '>=1.9'
-  gem.files = Dir['**/**']
+  gem.files = FileList[
+	'[A-Z]*',
+    'bin/*',
+	'lib/**/*',
+	'test/**/*',
+  ].to_a
   gem.executables = [ 'tdp' ]
   gem.test_files = Dir["test/test*.rb"]
   gem.has_rdoc = true
