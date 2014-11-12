@@ -27,10 +27,14 @@ module TDP
     end
 
     # Read a CSV file into an array of hashes with the symbolized headers as keys
-    def read_csv_with_header( body )
-      csv = CSV.new(body, :headers => true, :header_converters => :symbol, :converters => [:all, :blank_to_nil])
-      csv.to_a.map {|row| row.to_hash }
+    # Column separator is a colon.
+    def read_csv_with_header( path )
+      File.open(path) do |f|
+        csv = CSV.new(f, :col_sep => ';', :headers => true, :header_converters => :symbol, :converters => [:all, :blank_to_nil])
+        csv.to_a.map {|row| row.to_hash }
+      end
     end
+    
   end
   
   module SystemFunctions
