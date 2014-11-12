@@ -8,9 +8,8 @@ end
 
 SimpleCov.configure do
   clean_filters
-  load_adapter 'test_frameworks'
-  add_filter "ruby/gems"
-  add_filter "lib/ruby"
+  load_profile 'test_frameworks'
+  add_filter "ruby"
 end
 
 ENV["COVERAGE"] && SimpleCov.start do
