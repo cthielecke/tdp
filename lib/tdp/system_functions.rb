@@ -20,25 +20,15 @@ module TDP
     
   end
   
-  module CSVFiles
- 
-    CSV::Converters[:blank_to_nil] = lambda do |field|
-      field && field.empty? ? nil : field
-    end
-
-    # Read a CSV file into an array of hashes with the symbolized headers as keys
-    # Column separator is a colon.
-    def read_csv_with_header( path )
-      File.open(path) do |f|
-        csv = CSV.new(f, :col_sep => ';', :headers => true, :header_converters => :symbol, :converters => [:all, :blank_to_nil])
-        csv.to_a.map {|row| row.to_hash }
-      end
-    end
-    
+  module UserModule
   end
   
   module SystemFunctions
     include TDP::RandomThings
-    include TDP::CSVFiles
-	end
+  end
+  
+  module UserFunctions
+    include TDP::UserModule
+  end
+  
 end
