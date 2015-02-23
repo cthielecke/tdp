@@ -1,8 +1,0 @@
-		<GrpHdr>
-			<MsgId><%= Time.now.strftime("MSGID%Y%m%dT%H%M%SN%9N") %></MsgId>
-			<CreDtTm><%= Time.now.strftime("%FT%T.%L%z") %></CreDtTm>
-			<NbOfTxs>2</NbOfTxs>
-			<InitgPty>
-				<Nm>Initiator Name</Nm>
-			</InitgPty>
-		</GrpHdr>
