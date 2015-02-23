@@ -5,6 +5,7 @@ module TDP
 
   class Keyword
     include TDP::SystemFunctions
+    include TDP::UserFunctions
     attr_reader :library_handler, :name, :action
     attr_accessor :parent
     
@@ -13,7 +14,6 @@ module TDP
       @name = args[:name]
       @action = args[:action]
       @parent = nil
-      # puts"LOG: New keyword of class #{self.class}, action defined in #{action.source_location}" if @action
     end
     
     class << self
@@ -37,6 +37,15 @@ module TDP
         val = source.instance_variable_get(varname)
         instance_variable_set(varname, val) unless instance_variable_defined?(varname)
       end
+    end
+    
+    # Write the text generated up to now from buffer into file
+    def write_file( fname )
+      File.open(fname, "w") do |f|
+        f << TDP.application.result
+      end
+      TDP.application.result = String.new
+#      puts "...written to #{fname}"
     end
     
     # Resend method as private function if method/keyword is allowed for the object,
@@ -105,7 +114,7 @@ module TDP
     keywords :config
 
     # Evaluate the associated template
-    def generate
+    def generate( result = TDP.application.result, loader = TDP, engine_class = TDP::Engine)
 
       # Templates defined in tdp files must have actions which evaluate 
       # to single quoted strings.
@@ -115,12 +124,12 @@ module TDP
       if action
         source = BasicObject.new.instance_eval(&action)
       else
-        source = TDP.load_template(name)
+        source = loader.load_template(name)
       end
-      engine = TDP::Engine.new(name: name, source: source)
+      engine = engine_class.new(name: name, source: source)
       # Convert and generate with self as context
       engine.convert
-      engine.generate(self)
+      result << engine.generate(self)
     end
 
   end
