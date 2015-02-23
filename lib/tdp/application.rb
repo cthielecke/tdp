@@ -30,6 +30,10 @@ module TDP
 
     # List of the top level task names (task names from the command line).
     attr_reader :top_level_tasks
+    
+    # Cumulated result of template executions,
+    # used as intermediary cache and must be written to file.
+    attr_accessor :result
 
     DEFAULT_TDP_FILES = ['tdp_file.rb', 'TDP_file.rb', 'tdp_file.tdp', 'TDP_file.tdp'].freeze
 
@@ -47,6 +51,7 @@ module TDP
       @default_loader = TDP::DefaultLoader.new
       add_loader('rb', DefaultLoader.new)
       add_loader('tdp', DefaultLoader.new)
+      @result = String.new
     end
 
     # Run the TDP application.  The run method performs the following
@@ -87,6 +92,9 @@ module TDP
     def top_level
       standard_exception_handling do
         top_level_tasks.each { |task_name| invoke_task(task_name) }
+        if result
+          puts result
+        end
       end
     end
 
@@ -167,15 +175,6 @@ module TDP
     # passing to OptionParser.
     def standard_tdp_options
       [
-        ['--dry-run', '-n', "Do a dry run without executing actions.",
-          lambda { |value|
-            options.dryrun = true
-            options.trace = true
-          }
-        ],
-        ['--libdir', '-I LIBDIR', "Include LIBDIR in the search path for required modules.",
-          lambda { |value| $:.push(value) }
-        ],
         ['--no-search', '--nosearch', '-N', "Do not search parent directories for the TDPfile.",
           lambda { |value| options.nosearch = true }
         ],
@@ -199,7 +198,6 @@ module TDP
           lambda { |value| 
             value ||= 'templates'
             # freeze array to prevent additions from TDPfile
-            puts "templates value = #{value}"
             add_template_path(files: value.split("#{File::PATH_SEPARATOR}"), freeze: true)
           }
         ],
@@ -212,11 +210,6 @@ module TDP
           lambda { |value|
             puts "tdp, version #{TDP::VERSION}"
             exit
-          }
-        ],
-        ['--no-deprecation-warnings', '-X', "Disable the deprecation warnings.",
-          lambda { |value|
-            options.ignore_deprecate = true
           }
         ],
       ]
