@@ -35,6 +35,8 @@ For automation purposes the use of Rake or some similar tool is mandatory.}
   gem.add_development_dependency "jeweler", "~> 2.0.1"
   gem.add_development_dependency "simplecov", ">= 0"
   
+  gem.add_runtime_dependency "erubis", ">= 2.7"
+  
 end
 Jeweler::RubygemsDotOrgTasks.new
 
