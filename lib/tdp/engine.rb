@@ -1,6 +1,8 @@
 module TDP
 require 'erubis'
 
+# TODO
+# use class instance variable as buffer for output
 class Engine
 attr_reader :name, :version, :source, :code, :engine
 
@@ -22,7 +24,7 @@ attr_reader :name, :version, :source, :code, :engine
   end
   
 	def generate(context=nil)
-		puts engine.evaluate(context)
+		engine.evaluate(context)
 	end
 
 end
