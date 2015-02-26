@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "tdp"
-  s.version = "0.0.2.0"
+  s.version = "0.0.3.beta"
 
-  s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
+  s.required_rubygems_version = Gem::Requirement.new("> 1.3.1") if s.respond_to? :required_rubygems_version=
   s.authors = ["Carsten Thielecke"]
-  s.date = "2014-11-10"
+  s.date = "2015-02-26"
   s.description = "This tool is a small DSL designed to glue together arbitrary templates and configurations to provide data specifications in a versatile and easy way.\nAs there are no limitations on what to specify with a template, neither will the usage of this tool be limited to specific domains of use.\nIt was initially intended to generate a host of XML test data specifications in a reproducible way.\nFor automation purposes the use of Rake or some similar tool is mandatory."
   s.email = "carsten.thielecke@ieee.org"
   s.executables = ["tdp"]
@@ -34,10 +34,8 @@ Gem::Specification.new do |s|
     "lib/tdp/version.rb",
     "tdp.gemspec",
     "test/helper.rb",
-    "test/tdp_file.rb",
-    "test/templates/footer.erubis",
-    "test/templates/groupheader.erubis",
-    "test/test_dsl.rb"
+    "test/test_dsl.rb",
+    "test/test_keyword.rb"
   ]
   s.homepage = "http://github.com/cthielecke/tdp"
   s.licenses = ["MIT"]
@@ -45,7 +43,7 @@ Gem::Specification.new do |s|
   s.required_ruby_version = Gem::Requirement.new(">= 1.9")
   s.rubygems_version = "1.8.29"
   s.summary = "Templated data provisioning or the poor man's Q-Up"
-  s.test_files = ["test/test_dsl.rb"]
+  s.test_files = ["test/test_dsl.rb", "test/test_keyword.rb"]
 
   if s.respond_to? :specification_version then
     s.specification_version = 3
@@ -53,13 +51,16 @@ Gem::Specification.new do |s|
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
       s.add_development_dependency(%q<jeweler>, ["~> 2.0.1"])
       s.add_development_dependency(%q<simplecov>, [">= 0"])
+      s.add_runtime_dependency(%q<erubis>, [">= 2.7"])
     else
       s.add_dependency(%q<jeweler>, ["~> 2.0.1"])
       s.add_dependency(%q<simplecov>, [">= 0"])
+      s.add_dependency(%q<erubis>, [">= 2.7"])
     end
   else
     s.add_dependency(%q<jeweler>, ["~> 2.0.1"])
     s.add_dependency(%q<simplecov>, [">= 0"])
+    s.add_dependency(%q<erubis>, [">= 2.7"])
   end
 end
 
