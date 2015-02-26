@@ -1,12 +1,75 @@
 = tdp
 
-Templated Data Provisioning
+== Templated Data Provisioning
 ...or the poor man's Q-Up.
 
 This tool is a small DSL designed to glue together arbitrary templates and configurations to provide data specifications in a versatile and easy way.
 As there are no limitations on what to specify with a template, neither will the usage of this tool be limited to specific domains of use.
-It was initially intended to generate a host of XML test data specifications in a reproducible way.
-For automation purposes the use of Rake or some similar tool is mandatory.
+It was initially intended to generate a host of XML test data input files in a reproducible way.
+For automation purposes the use of Rake or some similar tool is advised.
+
+== Templates
+
+TDP uses erubis as template engine because these templates are not generally oriented towards structured documents like HTML or XML.
+For general text output with whitespace being relevant erubis seemed a good choice. Please see the users guide for erubis[http://www.kuwata-lab.com/erubis/users-guide.html] for more information on template syntax.
+
+=== Scope
+
+Scope of variables in templates is explicitly handled by context not by bindings. So local variables are never available inside a template. Use instance variables instead.
+To be consistent this scoping mechanism is valid for all TDP keywords.
+All instance variables are propagated to the next lower level in a keyword scope hierarchy. Be aware that this is only a shallow copy, side effects may occur or may even be intended.
+
+== Usage
+
+Specify your tasks and configurations in a TDP file. This file comprises definitions for tasks and configurations that may be nested as necessary. The default name for a TDP file is <b><tt>tdp_file.rb</tt></b>.
+From your defined tasks you call configurations, other tasks and templates. Only templates generate output into an internal buffer that may be flushed into user defined file(s) at any point in a task.
+Configurations are evaluated in the scope of the task that is calling them. Only instance variables get propagated to the scope of a called task or template.
+
+=== Template definitions
+
+You define templates simply as text files in a directory of choice. All templates currently use the mandatory suffix <b><tt>.erubis</tt></b>. The directory that is used as a template library is defined with the keyword <b><tt>template_path "path/to/templates/dir"</tt></b>.
+
+=== Examples
+
+	# Define a configuration
+	define Config: "init" do
+	  # Specify an instance variable
+	  @jobid = rand(10000000000).to_s.rjust(10, "0")
+	end
+
+	# Define a task
+	define Task: "process" do
+	  # Call a configuration
+	  config :init
+	  # Call a template
+	  template :prefix
+	  4.times do |loop|
+		# Use the variable from the config
+		@id = @jobid + loop.to_s
+		# Instance variables are known in the template whereas "loop" is not
+		template :core
+	  end
+	end
+
+For a more thorough example see the provided demo for generation of payment orders in the SEPA pain.001.003.03 format. This approach (in a slightly more elaborated version) has been successfully used for testing a customized engine for SEPA payments.
+
+== Task execution
+
+Tasks are executed by providing their name as parameter to a call of the installed binary command "tdp". For any other form of automation or to pass environment variables the use of tools like Rake is advised. TDP itself does not provide more interaction with the user. 
+
+=== Synopsis
+
+	tdp [-f tdp_file] {options} targets...
+
+	Options are ...
+		-N, --no-search, --nosearch      Do not search parent directories for the TDPfile.
+		-f, --tdpfile [FILE]             Use FILE as the TDPfile.
+		-L, --tdplib [TDPLIBDIR]         Auto-import any .tdp files in TDPLIBDIR. (default is 'tdplib')
+		-T, --templates [TEMPLATESDIR]   Lookup template files in TEMPLATESDIR. (default is 'templates'),
+			                             overrides any path statements in the TDPfile
+		-t, --trace                      Turn on invoke/execute tracing, enable full backtrace.
+		-V, --version                    Display the program version.
+		-h, -H, --help                   Display this help message.
 
 == Contributing to tdp
  
@@ -20,6 +83,6 @@ For automation purposes the use of Rake or some similar tool is mandatory.
 
 == Copyright
 
-Copyright (c) 2014 Carsten Thielecke. 
+Copyright (c) 2014-2015 Carsten Thielecke. 
 See LICENSE.txt for further details.
 
