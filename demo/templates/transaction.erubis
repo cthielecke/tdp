@@ -1,0 +1,26 @@
+			<CdtTrfTxInf>
+				<PmtId>
+					<EndToEndId><%= "E2E#{@id_testdataid}#{@id_loop}#{@id_timestamp}#{@id_suffix}" %></EndToEndId>
+				</PmtId>
+				<Amt>
+					<InstdAmt Ccy="<%= check_default_value('EUR', @data[:ccy]) %>"><%= @data[:amount] %></InstdAmt>
+				</Amt>
+				<% if @data[:creditorbicinpain] %>
+				<CdtrAgt>
+					<FinInstnId>
+						<BIC><%= if @data[:forcedcreditorbic] then @data[:forcedcreditorbic] else @data[:creditorbic] end %></BIC>
+					</FinInstnId>
+				</CdtrAgt>
+				<% end %>
+				<Cdtr>
+					<Nm><%= @data[:creditorname] %></Nm>
+				</Cdtr>
+				<CdtrAcct>
+					<Id>
+						<IBAN><%= @data[:creditoriban] %></IBAN>
+					</Id>
+				</CdtrAcct>
+				<RmtInf>
+					<Ustrd><%= "#{@data[:testdataid]}: #{@data[:remittanceinfo]}(#{@loop})" %></Ustrd>
+				</RmtInf>
+			</CdtTrfTxInf>

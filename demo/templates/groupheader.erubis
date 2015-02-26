@@ -1,0 +1,17 @@
+		<GrpHdr>
+			<% pval = "MSGID#{@id_testdataid}#{@id_timestamp}" %>
+			<% if @data[:missingtagname] != "MsgId" %><MsgId><%= derive_value(@data, pval, :msgidforced) %></MsgId><% end %>
+			<CreDtTm><%= Time.now.strftime("%FT%T.%L%:z") %></CreDtTm>
+			<NbOfTxs><%= derive_value(@data, @data[:hdrtxs], :hdrtxsforced) %></NbOfTxs>
+			<CtrlSum><%= derive_value(@data, @data[:hdrsum], :hdrsumforced) %></CtrlSum>
+			<InitgPty>
+				<%= create_tag('Nm', @data[:customername]) %>
+				<Id>
+					<OrgId>
+						<Othr>
+							<Id>123456</Id>
+						</Othr>
+					</OrgId>
+				</Id>	 	
+			</InitgPty>
+		</GrpHdr>

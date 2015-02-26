@@ -1,0 +1,4 @@
+Generate;Nr;InterChgStart;InstrStart;TestDataID;CustomerAccount;CreditorName;amountSpecial;ExecDate;copies;Batch;DebtorBICInPAIN;creditorbicinpain;postalctry;postaladd;CustomerName;country;address;CustomerBIC;CustomerIBAN;CreditorBIC;CreditorIBAN
+X;2;;TRUE;On Us;Customer_1;Creditor_ID_11;;0;;true;TRUE;TRUE;;;CustName1;;;INGDDEFFXXX;DE70324272070142517118;BKRAITMM;IT77E3499120247451451144050
+X;3;TRUE;;On Us;Customer_2;Creditor_ID_12;;-1;;;TRUE;TRUE;;;CustName2;;;PBNKDEFFXXX;DE13016698635029735396;COBADEFFXXX;DE78850400000100083503
+;4;TRUE;;On Us;Customer_3;Creditor_ID_13;;15;;;TRUE;TRUE;;;CustName3;;;COBADEFFXXX;DE66870250067072917856;PBNKDEFFXXX;DE13016698635029735396

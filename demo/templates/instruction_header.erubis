@@ -1,0 +1,40 @@
+		<PmtInf>
+			<PmtInfId><%= "PMTID#{@id_testdataid}#{@id_timestamp}" %></PmtInfId>
+			<PmtMtd>TRF</PmtMtd>
+			<BtchBookg><%= derive_value(@data, false, :batch).to_s.downcase %></BtchBookg>
+			<NbOfTxs><%= derive_value(@data, @data[:pmttxs], :pmttxsforced) %></NbOfTxs>
+			<CtrlSum><%= derive_value(@data, @data[:pmtsum], :pmtsumforced) %></CtrlSum>
+			<PmtTpInf>
+				<SvcLvl>
+					<Cd><%= derive_value(@data, 'URGP', :svclvlcd).to_s.upcase %></Cd>
+				</SvcLvl>
+			</PmtTpInf>
+			<ReqdExctnDt><%= calculate_exec_date(@today, @data[:execdate]) %></ReqdExctnDt>
+			<Dbtr>
+				<%= create_tag('Nm', @data[:customername]) %>
+				<% if @data[:postalctry] %> 
+				<PstlAdr>
+					<Ctry><%= @data[:country] %></Ctry>
+					<% if @data[:postaladd] %>
+					<AdrLine><%= @data[:address] %></AdrLine>
+					<% end %>
+				</PstlAdr>
+				<% end %>
+			</Dbtr>
+			<DbtrAcct>
+				<Id>
+					<IBAN><%= @data[:customeriban] %></IBAN>
+				</Id>
+			</DbtrAcct>
+			<DbtrAgt>
+				<FinInstnId>
+					<% if @data[:debtorbicinpain] then%>
+					<BIC><%= @data[:customerbic] %></BIC>
+					<% else %>
+					<Othr>
+						<Id>NOTPROVIDED</Id>
+					</Othr>
+					<% end %>
+				</FinInstnId>
+			</DbtrAgt>
+			<ChrgBr>SLEV</ChrgBr>
